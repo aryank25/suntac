@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTP Verification</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      color: #ffd700;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 40px;
+      border-radius: 15px;
+      border: 2px solid #ffd700;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      backdrop-filter: blur(10px);
+      animation: scaleIn 0.5s ease-out;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 30px;
+      color: #ffd700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      animation: slideIn 1s ease-out;
+    }
+
+    input {
+      width: 100%;
+      max-width: 300px;
+      padding: 15px;
+      font-size: 1.2em;
+      margin-bottom: 30px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 2px solid #ffd700;
+      border-radius: 8px;
+      color: #ffd700;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #fff;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    input::placeholder {
+      color: rgba(255, 215, 0, 0.5);
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 20px;
+    }
+
+    .buttons a, button {
+      flex: 1;
+      padding: 15px 30px;
+      font-size: 1.1em;
+      cursor: pointer;
+      background-color: #ffd700;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .buttons a:hover, button:hover {
+      background-color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    @keyframes slideIn {
+      from { 
+        transform: translateY(-30px);
+        opacity: 0;
+      }
+      to { 
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes scaleIn {
+      from { 
+        transform: scale(0.95);
+        opacity: 0;
+      }
+      to { 
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+
+      input {
+        font-size: 1em;
+        padding: 12px;
+      }
+
+      .buttons {
+        flex-direction: column;
+        padding: 0;
+      }
+
+      .buttons a, button {
+        width: 100%;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Enter OTP</h1>  
+    <input type="text" id="otp" placeholder="Enter 6-digit OTP" maxlength="6">
+    <div class="buttons">
+      <a href="index.html">Back</a>
+      <button onclick="login()">Login</button>
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      const otp = document.getElementById('otp').value;
+      if (otp === "") {
+        alert("Please enter OTP");
+      } else {
+        window.location.href = "home.html";
+      }
+    }
+  </script>
+</body>
+</html>

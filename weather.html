@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Details</title>
+    <!-- Add Leaflet CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #1a1a1a;
+            padding: 20px;
+            color: #ffd700;
+        }
+        .weather-container {
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #000000;
+            color: #ffd700;
+            max-width: 500px;
+            border-radius: 10px;
+            border: 2px solid #ffd700;
+        }
+        h1, h2 {
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            text-align: left;
+            padding: 15px;
+        }
+        .weather-item {
+            background-color: rgba(255, 215, 0, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ffd700;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #ffd700;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            color: #000000;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #ffed4a;
+        }
+        #map {
+            height: 300px;
+            max-width: 500px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(255, 215, 0, 0.2);
+            border: 2px solid #ffd700;
+        }
+        strong {
+            color: #ffed4a;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather Information</h1>
+    <div class="weather-container" id="weather-details">
+        <h2>Fetching Weather Details...</h2>
+    </div>
+    <div id="map"></div>
+    <div class="button-container">
+        <button onclick="fetchWeather()">Refresh Weather</button>
+        <button onclick="window.location.href='home.html'">Back to Home</button>
+    </div>
+
+    <!-- Add Leaflet JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script>
+        const API_KEY = "14b2cab4ecd8db263e6697a85ef2650a";
+        let map;
+        let marker;
+
+        function initMap(lat, lon) {
+            if (map) {
+                map.remove();
+            }
+            
+            map = L.map('map').setView([lat, lon], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            
+            marker = L.marker([lat, lon]).addTo(map);
+        }
+
+        function fetchWeather() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        initMap(lat, lon);
+                        getWeatherData(lat, lon);
+                    },
+                    error => alert("Unable to retrieve your location. Please enable location services.")
+                );
+            } else {
+                alert("Geolocation is not supported by your browser.");
+            }
+        }
+
+        async function getWeatherData(lat, lon) {
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
+            
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error("Unable to fetch weather data.");
+                }
+                const data = await response.json();
+                displayWeather(data);
+            } catch (error) {
+                alert("Error fetching weather data: " + error.message);
+            }
+        }
+
+        function getWindDirection(degrees) {
+            const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+            const index = Math.round(degrees / 22.5) % 16;
+            return directions[index];
+        }
+
+        function displayWeather(data) {
+            document.getElementById("weather-details").innerHTML = `
+                <h2>Current Weather in ${data.name}</h2>
+                <div class="weather-grid">
+                    <div class="weather-item">
+                        <strong>Temperature:</strong> ${data.main.temp.toFixed(1)}°C
+                    </div>
+                    <div class="weather-item">
+                        <strong>Feels Like:</strong> ${data.main.feels_like.toFixed(1)}°C
+                    </div>
+                    <div class="weather-item">
+                        <strong>Weather:</strong> ${data.weather[0].description}
+                    </div>
+                    <div class="weather-item">
+                        <strong>Humidity:</strong> ${data.main.humidity}%
+                    </div>
+                    <div class="weather-item">
+                        <strong>Wind Speed:</strong> ${(data.wind.speed * 3.6).toFixed(1)} km/h
+                    </div>
+                    <div class="weather-item">
+                        <strong>Wind Direction:</strong> ${getWindDirection(data.wind.deg)} (${data.wind.deg}°)
+                    </div>
+                    <div class="weather-item">
+                        <strong>Clouds:</strong> ${data.clouds.all}%
+                    </div>
+                    <div class="weather-item">
+                        <strong>Pressure:</strong> ${data.main.pressure} hPa
+                    </div>
+                    <div class="weather-item">
+                        <strong>Precipitation:</strong> ${data.rain ? (data.rain['1h'] || 0).toFixed(1) : '0'} mm/h
+                    </div>
+                </div>
+            `;
+
+            // Update marker popup with weather info
+            if (marker) {
+                marker.bindPopup(`
+                    <b>${data.name}</b><br>
+                    ${data.main.temp.toFixed(1)}°C, ${data.weather[0].description}
+                `).openPopup();
+            }
+        }
+
+        // Fetch weather data on page load
+        fetchWeather();
+    </script>
+</body>
+</html>

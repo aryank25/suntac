@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffd700;
+            min-height: 100vh;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+            border-bottom: 2px solid #ffd700;
+            backdrop-filter: blur(10px);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-icon:hover {
+            transform: scale(1.1);
+            color: #fff;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 40px;
+            padding: 0 20px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .card span {
+            font-size: 1.2em;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+
+        .card img {
+            width: 40px;
+            height: 40px;
+            filter: invert(80%) sepia(50%) saturate(1000%) hue-rotate(360deg) brightness(105%) contrast(105%);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.1);
+        }
+
+        .logout-button {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffd700;
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #fff;
+            transform: translateX(-50%) translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .notification-icon {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            filter: invert(80%) sepia(50%) saturate(1000%) hue-rotate(360deg) brightness(105%) contrast(105%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification-icon:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .card span {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span class="menu-icon">☰</span>
+        <h1>WELCOME</h1>
+        <img src="bell-ringing.png" alt="Notification" class="notification-icon" onclick="navigateTo('notify.html')">
+    </div>
+
+    <div class="main-content">
+        <div class="card" onclick="navigateTo('weather.html')">
+            <span>WEATHER REPORT</span>
+            <img src="cloudy.png" alt="Soil Level">
+        </div>
+        <div class="card" onclick="navigateTo('moisture.html')">
+            <span>MOISTURE LEVEL</span>
+            <img src="moisturizing.png" alt="Moisture Level">
+        </div>
+        <div class="card" onclick="navigateTo('status.html')">
+            <span>SYSTEM STATUS</span>
+            <img src="status-update.png" alt="System Status">
+        </div>
+    </div>
+
+    <button class="logout-button" onclick="logout()">Logout</button>
+
+    <script>
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        function logout() {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

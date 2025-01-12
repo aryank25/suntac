@@ -1,0 +1,25 @@
+{
+    "events": [
+        {
+            "timestamp": 1705050600,
+            "action": "ON",
+            "duration": 300
+        },
+        {
+            "timestamp": 1705050900,
+            "action": "OFF",
+            "duration": null
+        },
+        {
+            "timestamp": 1705054200,
+            "action": "ON",
+            "duration": 240
+        },
+        {
+            "timestamp": 1705054440,
+            "action": "OFF",
+            "duration": null
+        }
+    ],
+    "lastUpdated": 1705054440
+}
